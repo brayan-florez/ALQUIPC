@@ -1,0 +1,224 @@
+/* =========================================
+   CONFIGURACIÓN GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f2f4f7;
+    color: #222;
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+header {
+    background-color: #172554;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 18px;
+}
+
+
+/* =========================================
+   CONTENIDO PRINCIPAL
+========================================= */
+
+main {
+    width: 90%;
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+
+/* =========================================
+   TITULO
+========================================= */
+
+main h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #172554;
+}
+
+
+/* =========================================
+   FORMULARIO
+========================================= */
+
+form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================================
+   ETIQUETAS
+========================================= */
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+
+/* =========================================
+   CAMPOS
+========================================= */
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+
+/* =========================================
+   BOTÓN
+========================================= */
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* =========================================
+   DISEÑO PARA CELULARES
+========================================= */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    main {
+        width: 95%;
+        margin: 25px auto;
+    }
+
+    form {
+        padding: 20px;
+    }
+}
+
+/* =========================================
+   RESULTADO DE LA FACTURA
+========================================= */
+
+.resultado {
+    background-color: white;
+    margin-top: 25px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+.resultado h2 {
+    color: #172554;
+    margin-bottom: 20px;
+}
+
+#detalleFactura {
+    line-height: 1.8;
+}
+
+#detalleFactura h3 {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #172554;
+    color: white;
+    border-radius: 6px;
+    text-align: center;
+}
+
+#detalleFactura p {
+    margin-bottom: 8px;
+}
+
+
+/* =========================================
+   MENSAJES
+========================================= */
+
+.mensaje {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   ACCIONES
+========================================= */
+
+.acciones {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.acciones button {
+    flex: 1;
+}
+
+#btnNuevaFactura {
+    background-color: #64748b;
+}
+
+#btnNuevaFactura:hover {
+    background-color: #475569;
+}
+
+#btnCorreo {
+    background-color: #15803d;
+}
+
+#btnCorreo:hover {
+    background-color: #166534;
+}

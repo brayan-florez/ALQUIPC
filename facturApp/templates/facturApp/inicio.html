@@ -1,0 +1,151 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ALQUIPC - Facturación</title>
+
+    <link rel="stylesheet" href="{% static 'facturApp/css/estilos.css' %}">
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>ALQUIPC</h1>
+
+        <p>Sistema de facturación</p>
+
+    </header>
+
+
+    <main>
+
+        <h2>Solicitud de alquiler</h2>
+
+
+        <form>
+
+            <label for="idCliente">
+                ID del cliente:
+            </label>
+
+            <input
+                type="text"
+                id="idCliente"
+                name="idCliente"
+                readonly
+            >
+
+            <label for="correo">Correo electrónico:</label>
+
+            <input 
+            type="email"
+            id="correo"
+            name="correo"
+            placeholder="cliente@correo.com"
+            >
+
+
+            <label for="equipos">
+                Cantidad de equipos:
+            </label>
+
+            <input
+                type="number"
+                id="equipos"
+                name="equipos"
+                min="2"
+                placeholder="Mínimo 2"
+            >
+
+
+            <label for="dias">
+                Días iniciales:
+            </label>
+
+            <input
+                type="number"
+                id="dias"
+                name="dias"
+                min="1"
+                placeholder="Cantidad de días"
+            >
+
+
+            <label for="tipoAlquiler">
+                Tipo de alquiler:
+            </label>
+
+            <select
+                id="tipoAlquiler"
+                name="tipoAlquiler"
+            >
+
+                <option value="">
+                    Seleccione una opción
+                </option>
+
+                <option value="ciudad">
+                    Dentro de la ciudad
+                </option>
+
+                <option value="fuera">
+                    Fuera de la ciudad
+                </option>
+
+                <option value="establecimiento">
+                    Dentro del establecimiento
+                </option>
+
+            </select>
+
+
+            <label for="diasAdicionales">
+                Días adicionales:
+            </label>
+
+            <input
+                type="number"
+                id="diasAdicionales"
+                name="diasAdicionales"
+                min="0"
+                value="0"
+            >
+
+
+            <button type="button" id="btnCalcular">
+                Calcular factura
+            </button>
+
+        </form>
+
+        <div id="mensaje" class="mensaje"></div>
+
+        <section id="resultado" class="resultado">
+            <h2>Resumen de facturación</h2>
+            <div id="detalleFactura"></div>
+
+            <div class="acciones">
+                <button type="button" id="btnCorreo">Preparar correo</button>
+
+                <button type="button" id="btnNuevaFactura">Nueva Factura</button>
+            </div>
+
+
+        </section>
+
+    </main>
+
+    <script src="{% static 'facturApp/js/facturacion.js' %}" ></script>
+
+</body>
+
+</html>
