@@ -3,16 +3,33 @@
 ========================================= */
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
+
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+
     background-color: #f2f4f7;
+
     color: #222;
+
     min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.contenedor {
+    width: 90%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
 }
 
 
@@ -20,20 +37,57 @@ body {
    ENCABEZADO
 ========================================= */
 
-header {
-    background-color: #172554;
+.encabezado {
+
+    background-color: #03071e;
+
     color: white;
-    text-align: center;
-    padding: 30px 20px;
+
+    padding: 25px 0;
+
+    border-bottom: 5px solid #fe6c05;
 }
 
-header h1 {
-    font-size: 36px;
-    margin-bottom: 8px;
+
+.encabezado-contenido {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
 }
 
-header p {
-    font-size: 18px;
+
+.logo {
+
+    background-color: #fe6c05;
+
+    padding: 15px 20px;
+
+    border-radius: 8px;
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+.titulo h1 {
+
+    font-size: 28px;
+
+    margin-bottom: 5px;
+}
+
+
+.titulo p {
+
+    color: #d9d9d9;
+
+    font-size: 15px;
 }
 
 
@@ -42,20 +96,50 @@ header p {
 ========================================= */
 
 main {
-    width: 90%;
-    max-width: 700px;
-    margin: 40px auto;
+
+    flex: 1;
+
+    padding: 40px 0;
 }
 
 
 /* =========================================
-   TITULO
+   TARJETAS
 ========================================= */
 
-main h2 {
-    text-align: center;
+.tarjeta,
+.resultado {
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    padding: 30px;
+
     margin-bottom: 25px;
-    color: #172554;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.tarjeta h2,
+.resultado h2 {
+
+    color: #03071e;
+
+    margin-bottom: 10px;
+
+    border-left: 5px solid #fe6c05;
+
+    padding-left: 12px;
+}
+
+
+.descripcion {
+
+    color: #666;
+
+    margin-bottom: 25px;
 }
 
 
@@ -63,120 +147,145 @@ main h2 {
    FORMULARIO
 ========================================= */
 
-form {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+.formulario {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
 }
 
 
-/* =========================================
-   ETIQUETAS
-========================================= */
+.campo {
 
-label {
-    display: block;
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.campo label {
+
     font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
+
+    margin-bottom: 7px;
+
+    color: #03071e;
 }
 
 
-/* =========================================
-   CAMPOS
-========================================= */
+.campo input,
+.campo select {
 
-input,
-select {
     width: 100%;
+
     padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 16px;
-    margin-bottom: 20px;
-}
 
-input:focus,
-select:focus {
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 15px;
+
     outline: none;
-    border-color: #2563eb;
-}
 
-
-/* =========================================
-   BOTÓN
-========================================= */
-
-button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    background-color: #2563eb;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #1d4ed8;
-}
-
-
-/* =========================================
-   DISEÑO PARA CELULARES
-========================================= */
-
-@media (max-width: 600px) {
-
-    header h1 {
-        font-size: 28px;
-    }
-
-    main {
-        width: 95%;
-        margin: 25px auto;
-    }
-
-    form {
-        padding: 20px;
-    }
-}
-
-/* =========================================
-   RESULTADO DE LA FACTURA
-========================================= */
-
-.resultado {
     background-color: white;
-    margin-top: 25px;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
 }
 
-.resultado h2 {
-    color: #172554;
-    margin-bottom: 20px;
+
+.campo input:focus,
+.campo select:focus {
+
+    border-color: #fe6c05;
+
+    box-shadow: 0 0 0 2px rgba(254, 108, 5, 0.15);
 }
 
-#detalleFactura {
-    line-height: 1.8;
+
+.campo small {
+
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.4;
 }
 
-#detalleFactura h3 {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #172554;
-    color: white;
+
+/* =========================================
+   BOTONES
+========================================= */
+
+.boton-contenedor {
+
+    grid-column: 1 / -1;
+
+    margin-top: 10px;
+}
+
+
+.btn {
+
+    border: none;
+
     border-radius: 6px;
-    text-align: center;
+
+    padding: 12px 20px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
 }
 
-#detalleFactura p {
-    margin-bottom: 8px;
+
+.btn-principal {
+
+    background-color: #fe6c05;
+
+    color: white;
+
+    width: 100%;
+}
+
+
+.btn-principal:hover {
+
+    background-color: #d95700;
+}
+
+
+.btn-correo {
+
+    background-color: #198754;
+
+    color: white;
+}
+
+
+.btn-correo:hover {
+
+    background-color: #146c43;
+}
+
+
+.btn-secundario {
+
+    background-color: #6c757d;
+
+    color: white;
+}
+
+
+.btn-secundario:hover {
+
+    background-color: #565e64;
 }
 
 
@@ -185,11 +294,88 @@ button:hover {
 ========================================= */
 
 .mensaje {
+
     display: none;
-    margin-top: 20px;
+
     padding: 15px;
+
+    margin-bottom: 20px;
+
     border-radius: 6px;
+
     font-weight: bold;
+}
+
+
+.mensaje.error {
+
+    background-color: #f8d7da;
+
+    color: #842029;
+
+    border: 1px solid #f5c2c7;
+}
+
+
+.mensaje.exito {
+
+    background-color: #d1e7dd;
+
+    color: #0f5132;
+
+    border: 1px solid #badbcc;
+}
+
+
+/* =========================================
+   RESULTADO
+========================================= */
+
+.resultado {
+
+    display: none;
+}
+
+
+.detalle-factura {
+
+    margin-top: 20px;
+}
+
+
+.detalle-factura p {
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid #eeeeee;
+
+    color: #444;
+}
+
+
+.detalle-factura hr {
+
+    border: none;
+
+    border-top: 2px solid #eeeeee;
+
+    margin: 15px 0;
+}
+
+
+.detalle-factura h3 {
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    background-color: #03071e;
+
+    color: white;
+
+    border-radius: 6px;
+
+    font-size: 20px;
 }
 
 
@@ -198,27 +384,76 @@ button:hover {
 ========================================= */
 
 .acciones {
+
     display: flex;
-    gap: 15px;
+
+    gap: 10px;
+
     margin-top: 25px;
 }
 
-.acciones button {
-    flex: 1;
+
+/* =========================================
+   PIE DE PÁGINA
+========================================= */
+
+.pie {
+
+    background-color: #03071e;
+
+    color: #ccc;
+
+    text-align: center;
+
+    padding: 20px;
+
+    margin-top: auto;
+
+    font-size: 14px;
 }
 
-#btnNuevaFactura {
-    background-color: #64748b;
-}
 
-#btnNuevaFactura:hover {
-    background-color: #475569;
-}
+/* =========================================
+   RESPONSIVE
+========================================= */
 
-#btnCorreo {
-    background-color: #15803d;
-}
+@media (max-width: 700px) {
 
-#btnCorreo:hover {
-    background-color: #166534;
+    .encabezado-contenido {
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+
+    .titulo h1 {
+
+        font-size: 23px;
+    }
+
+
+    .formulario {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .boton-contenedor {
+
+        grid-column: auto;
+    }
+
+
+    .acciones {
+
+        flex-direction: column;
+    }
+
+
+    .acciones .btn {
+
+        width: 100%;
+    }
+
 }

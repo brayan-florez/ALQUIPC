@@ -9,7 +9,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ALQUIPC - Facturación</title>
+    <title>ALQUIPC - Sistema de Facturación</title>
 
     <link rel="stylesheet" href="{% static 'facturApp/css/estilos.css' %}">
 
@@ -17,134 +17,248 @@
 
 <body>
 
-    <header>
+    {% csrf_token %}
 
-        <h1>ALQUIPC</h1>
+    <!-- ENCABEZADO -->
 
-        <p>Sistema de facturación</p>
+    <header class="encabezado">
+
+        <div class="contenedor encabezado-contenido">
+
+            <div class="logo">
+                <span>ALQUIPC</span>
+            </div>
+
+            <div class="titulo">
+
+                <h1>Sistema de Facturación</h1>
+
+                <p>
+                    Alquiler de equipos de cómputo portátiles
+                </p>
+
+            </div>
+
+        </div>
 
     </header>
 
 
-    <main>
+    <!-- CONTENIDO PRINCIPAL -->
 
-        <h2>Solicitud de alquiler</h2>
+    <main class="contenedor">
 
+        <!-- FORMULARIO -->
 
-        <form>
+        <section class="tarjeta">
 
-            <label for="idCliente">
-                ID del cliente:
-            </label>
+            <h2>Datos del alquiler</h2>
 
-            <input
-                type="text"
-                id="idCliente"
-                name="idCliente"
-                readonly
-            >
-
-            <label for="correo">Correo electrónico:</label>
-
-            <input 
-            type="email"
-            id="correo"
-            name="correo"
-            placeholder="cliente@correo.com"
-            >
+            <p class="descripcion">
+                Ingrese la información necesaria para calcular
+                el valor del alquiler.
+            </p>
 
 
-            <label for="equipos">
-                Cantidad de equipos:
-            </label>
+            <div class="formulario">
 
-            <input
-                type="number"
-                id="equipos"
-                name="equipos"
-                min="2"
-                placeholder="Mínimo 2"
-            >
+                <!-- DATOS DEL CLIENTE -->
 
+                <div class="campo">
 
-            <label for="dias">
-                Días iniciales:
-            </label>
+                    <label for="nombreCliente">
+                        Nombre del cliente
+                    </label>
 
-            <input
-                type="number"
-                id="dias"
-                name="dias"
-                min="1"
-                placeholder="Cantidad de días"
-            >
+                    <input type="text" id="nombreCliente" placeholder="Ejemplo: Juan Pérez">
+
+                </div>
 
 
-            <label for="tipoAlquiler">
-                Tipo de alquiler:
-            </label>
+                <!-- CORREO -->
 
-            <select
-                id="tipoAlquiler"
-                name="tipoAlquiler"
-            >
+                <div class="campo">
 
-                <option value="">
-                    Seleccione una opción
-                </option>
+                    <label for="correo">
+                        Correo electrónico
+                    </label>
 
-                <option value="ciudad">
-                    Dentro de la ciudad
-                </option>
+                    <input type="email" id="correo" placeholder="cliente@correo.com">
 
-                <option value="fuera">
-                    Fuera de la ciudad
-                </option>
-
-                <option value="establecimiento">
-                    Dentro del establecimiento
-                </option>
-
-            </select>
+                </div>
 
 
-            <label for="diasAdicionales">
-                Días adicionales:
-            </label>
+                <!-- ID DEL CLIENTE -->
 
-            <input
-                type="number"
-                id="diasAdicionales"
-                name="diasAdicionales"
-                min="0"
-                value="0"
-            >
+                <div class="campo">
+
+                    <label for="idCliente">
+                        ID del cliente
+                    </label>
+
+                    <input type="text" id="idCliente" placeholder="Se generará automáticamente" readonly>
+
+                    <small>
+                        El ID será asignado automáticamente por ALQUIPC.
+                    </small>
+
+                </div>
 
 
-            <button type="button" id="btnCalcular">
-                Calcular factura
-            </button>
+                <!-- BOTÓN PARA REGISTRAR CLIENTE -->
 
-        </form>
+                <div class="campo boton-contenedor">
+
+                    <button type="button" id="btnRegistrarCliente" class="btn btn-principal">
+                        Registrar cliente
+                    </button>
+
+                </div>
+
+
+                <!-- CANTIDAD DE EQUIPOS -->
+
+                <div class="campo">
+
+                    <label for="equipos">
+                        Número de equipos
+                    </label>
+
+                    <input type="number" id="equipos" min="2" value="2">
+
+                    <small>
+                        El alquiler mínimo es de 2 equipos.
+                    </small>
+
+                </div>
+
+
+                <!-- DÍAS INICIALES -->
+
+                <div class="campo">
+
+                    <label for="dias">
+                        Días iniciales
+                    </label>
+
+                    <input type="number" id="dias" min="1" value="1">
+
+                </div>
+
+
+                <!-- MODALIDAD -->
+
+                <div class="campo">
+
+                    <label for="tipoAlquiler">
+                        Modalidad del alquiler
+                    </label>
+
+                    <select id="tipoAlquiler">
+
+                        <option value="">
+                            Seleccione una modalidad
+                        </option>
+
+                        <option value="ciudad">
+                            Dentro de la ciudad
+                        </option>
+
+                        <option value="fuera">
+                            Fuera de la ciudad (+5%)
+                        </option>
+
+                        <option value="establecimiento">
+                            Dentro del establecimiento (-5%)
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DÍAS ADICIONALES -->
+
+                <div class="campo">
+
+                    <label for="diasAdicionales">
+                        Días adicionales
+                    </label>
+
+                    <input type="number" id="diasAdicionales" min="0" value="0">
+
+                    <small>
+                        Cada día adicional genera un 2% de descuento,
+                        hasta un máximo acumulado del 10%.
+                    </small>
+
+                </div>
+
+
+                <!-- BOTÓN -->
+
+                <div class="campo boton-contenedor">
+
+                    <button type="button" id="btnCalcular" class="btn btn-principal">
+                        Calcular factura
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MENSAJE -->
 
         <div id="mensaje" class="mensaje"></div>
 
+
+        <!-- RESULTADO -->
+
         <section id="resultado" class="resultado">
-            <h2>Resumen de facturación</h2>
-            <div id="detalleFactura"></div>
+
+            <h2>
+                Resumen de facturación
+            </h2>
+
+            <div id="detalleFactura" class="detalle-factura"></div>
+
+
+            <!-- ACCIONES -->
 
             <div class="acciones">
-                <button type="button" id="btnCorreo">Preparar correo</button>
 
-                <button type="button" id="btnNuevaFactura">Nueva Factura</button>
+                <button type="button" id="btnCorreo" class="btn btn-correo">
+                    Preparar correo
+                </button>
+
+                <button type="button" id="btnNuevaFactura" class="btn btn-secundario">
+                    Nueva factura
+                </button>
+
             </div>
-
 
         </section>
 
     </main>
 
-    <script src="{% static 'facturApp/js/facturacion.js' %}" ></script>
+
+    <!-- PIE DE PÁGINA -->
+
+    <footer class="pie">
+
+        <p>
+            ALQUIPC &copy; 2026 - Sistema de Facturación
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="{% static 'facturApp/js/facturacion.js' %}"></script>
 
 </body>
 

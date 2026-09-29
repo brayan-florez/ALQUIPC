@@ -120,7 +120,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'facturaApp' / 'static'
+    BASE_DIR / 'facturApp' / 'static'
 ]
 
 

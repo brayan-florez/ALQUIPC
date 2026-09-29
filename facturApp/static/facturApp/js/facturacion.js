@@ -1,246 +1,424 @@
-const idCliente = document.getElementById("idCliente");
+const btnRegistrarCliente =
+    document.getElementById("btnRegistrarCliente");
+
+
+btnRegistrarCliente.addEventListener("click", function () {
+
+    const nombre =
+        document.getElementById("nombreCliente").value.trim();
+
+    const correo =
+        document.getElementById("correo").value.trim();
+
+    const csrfToken =
+        document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+        ).value;
+
+
+    if (nombre === "") {
+
+        mostrarMensaje(
+            "Debe ingresar el nombre del cliente.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (correo === "") {
+
+        mostrarMensaje(
+            "Debe ingresar el correo del cliente.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    fetch("/registrar-cliente/", {
+
+        method: "POST",
+
+        headers: {
+
+            "Content-Type": "application/json",
+
+            "X-CSRFToken": csrfToken
+
+        },
+
+        body: JSON.stringify({
+
+            nombre: nombre,
+
+            correo: correo
+
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if (data.exito) {
+
+            document.getElementById("idCliente").value =
+                data.codigo_cliente;
+
+
+            mostrarMensaje(
+                "Cliente registrado correctamente. ID asignado: "
+                + data.codigo_cliente,
+                "exito"
+            );
+
+        } else {
+
+            mostrarMensaje(
+                data.mensaje,
+                "error"
+            );
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        mostrarMensaje(
+            "Ocurrió un error al registrar el cliente.",
+            "error"
+        );
+
+    });
+
+});
 
 
 
+const btnCalcular =
+    document.getElementById("btnCalcular");
 
-const btnCalcular = document.getElementById("btnCalcular");
 
 btnCalcular.addEventListener("click", function () {
 
-    // Obtener los datos del formulario
+    const idCliente =
+        document.getElementById("idCliente").value.trim();
 
-    const idCliente = document.getElementById("idCliente").value.trim();
+    const equipos =
+        parseInt(
+            document.getElementById("equipos").value
+        );
 
-    const equipos = Number(
-        document.getElementById("equipos").value
-    );
+    const dias =
+        parseInt(
+            document.getElementById("dias").value
+        );
 
-    const dias = Number(
-        document.getElementById("dias").value
-    );
+    const tipoAlquiler =
+        document.getElementById("tipoAlquiler").value;
 
-    const tipoAlquiler = document.getElementById("tipoAlquiler").value;
-
-    const diasAdicionales = Number(
-        document.getElementById("diasAdicionales").value
-    );
+    const diasAdicionales =
+        parseInt(
+            document.getElementById("diasAdicionales").value
+        );
 
 
-    // Validar ID del cliente
+    // =========================================
+    // VALIDACIONES
+    // =========================================
 
     if (idCliente === "") {
 
-        alert("Ingrese el ID del cliente.");
+        mostrarMensaje(
+            "Primero debe registrar un cliente.",
+            "error"
+        );
 
         return;
     }
 
-
-    // Validar cantidad de equipos
 
     if (equipos < 2) {
 
-        alert("La cantidad mínima de equipos es 2.");
+        mostrarMensaje(
+            "Debe alquilar mínimo 2 equipos.",
+            "error"
+        );
 
         return;
     }
 
-
-    // Validar días iniciales
 
     if (dias < 1) {
 
-        alert("Debe ingresar al menos 1 día de alquiler.");
+        mostrarMensaje(
+            "Debe ingresar mínimo 1 día.",
+            "error"
+        );
 
         return;
     }
 
-
-    // Validar tipo de alquiler
 
     if (tipoAlquiler === "") {
 
-        alert("Seleccione el tipo de alquiler.");
+        mostrarMensaje(
+            "Debe seleccionar una modalidad.",
+            "error"
+        );
 
         return;
     }
 
-
-    // Validar días adicionales
 
     if (diasAdicionales < 0) {
 
-        alert("Los días adicionales no pueden ser negativos.");
+        mostrarMensaje(
+            "Los días adicionales no pueden ser negativos.",
+            "error"
+        );
 
         return;
     }
 
 
-    // Precio de un equipo por día
+    // =========================================
+    // TOKEN CSRF
+    // =========================================
 
-    const precioPorDia = 35000;
+    const csrfToken =
+        document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+        ).value;
 
 
-    // Calcular valor de los días iniciales
+    // =========================================
+    // ENVIAR DATOS A DJANGO
+    // =========================================
 
-    const valorInicial =
-        equipos * dias * precioPorDia;
+    fetch("/registrar-alquiler/", {
 
+        method: "POST",
 
-    // Calcular valor de los días adicionales
+        headers: {
 
-    const valorAdicional =
-        equipos * diasAdicionales * precioPorDia;
+            "Content-Type": "application/json",
 
+            "X-CSRFToken": csrfToken
 
-    // Calcular descuento por días adicionales
+        },
 
-    let porcentajeDescuentoAdicional =
-        diasAdicionales * 0.02;
+        body: JSON.stringify({
 
+            codigo_cliente: idCliente,
 
-    // Máximo descuento: 10%
+            equipos: equipos,
 
-    if (porcentajeDescuentoAdicional > 0.10) {
+            dias_iniciales: dias,
 
-        porcentajeDescuentoAdicional = 0.10;
-    }
+            dias_adicionales: diasAdicionales,
 
+            modalidad: tipoAlquiler
 
-    const descuentoAdicional =
-        valorAdicional * porcentajeDescuentoAdicional;
+        })
 
+    })
 
-    // Valor de los días adicionales después del descuento
+    .then(response => {
 
-    const valorAdicionalFinal =
-        valorAdicional - descuentoAdicional;
+        console.log(
+            "Código de respuesta:",
+            response.status
+        );
 
+        return response.json();
 
-    // Subtotal
+    })
 
-    const subtotal =
-        valorInicial + valorAdicionalFinal;
+    .then(data => {
 
+        console.log(
+            "Respuesta de Django:",
+            data
+        );
 
-    // Variables para incremento/descuento de modalidad
+        window.ultimaFactura = data;
 
-    let porcentajeModalidad = 0;
 
-    let valorModalidad = 0;
+        if (!data.exito) {
 
-    let descripcionModalidad = "";
+            mostrarMensaje(
+                data.mensaje,
+                "error"
+            );
 
+            return;
+        }
 
-    // Determinar modalidad
 
-    if (tipoAlquiler === "ciudad") {
+        // =========================================
+        // NOMBRE DE LA MODALIDAD
+        // =========================================
 
-        descripcionModalidad = "Dentro de la ciudad";
+        let nombreModalidad = "";
 
-    }
 
+        if (data.modalidad === "ciudad") {
 
-    else if (tipoAlquiler === "fuera") {
+            nombreModalidad =
+                "Dentro de la ciudad";
+        }
 
-        porcentajeModalidad = 0.05;
 
-        valorModalidad =
-            subtotal * porcentajeModalidad;
+        if (data.modalidad === "fuera") {
 
-        descripcionModalidad = "Fuera de la ciudad";
+            nombreModalidad =
+                "Fuera de la ciudad";
+        }
 
-    }
 
+        if (data.modalidad === "establecimiento") {
 
-    else if (tipoAlquiler === "establecimiento") {
+            nombreModalidad =
+                "Dentro del establecimiento";
+        }
 
-        porcentajeModalidad = -0.05;
 
-        valorModalidad =
-            subtotal * porcentajeModalidad;
+        // =========================================
+        // MOSTRAR RESULTADO
+        // =========================================
+
+        const detalleFactura =
+            document.getElementById("detalleFactura");
 
-        descripcionModalidad =
-            "Dentro del establecimiento";
 
-    }
+        detalleFactura.innerHTML = `
 
+            <p>
+                <strong>Número de factura:</strong>
+                ${data.numero_factura}
+            </p>
 
-    // Calcular total
+            <p>
+                <strong>ID Cliente:</strong>
+                ${data.codigo_cliente}
+            </p>
 
-    const total =
-        subtotal + valorModalidad;
+            <p>
+                <strong>Equipos:</strong>
+                ${data.equipos}
+            </p>
 
+            <p>
+                <strong>Días iniciales:</strong>
+                ${data.dias_iniciales}
+            </p>
 
-    // Mostrar resultado
+            <p>
+                <strong>Días adicionales:</strong>
+                ${data.dias_adicionales}
+            </p>
 
-    const resultado =
-        document.getElementById("resultado");
+            <p>
+                <strong>Modalidad:</strong>
+                ${nombreModalidad}
+            </p>
 
-    const detalleFactura =
-        document.getElementById("detalleFactura");
+            <hr>
 
+            <p>
+                <strong>
+                    Valor días iniciales:
+                </strong>
 
-    resultado.style.display = "block";
+                ${formatearMoneda(
+                    Number(data.valor_inicial)
+                )}
+            </p>
 
+            <p>
+                <strong>
+                    Valor días adicionales:
+                </strong>
 
-    detalleFactura.innerHTML = `
+                ${formatearMoneda(
+                    Number(data.valor_adicional)
+                )}
+            </p>
 
-        <p>
-            <strong>ID del cliente:</strong>
-            ${idCliente}
-        </p>
+            <p>
+                <strong>
+                    Descuento días adicionales:
+                </strong>
 
-        <p>
-            <strong>Equipos alquilados:</strong>
-            ${equipos}
-        </p>
+                ${formatearMoneda(
+                    Number(data.descuento_adicional)
+                )}
+            </p>
 
-        <p>
-            <strong>Días iniciales:</strong>
-            ${dias}
-        </p>
+            <p>
+                <strong>
+                    Subtotal:
+                </strong>
 
-        <p>
-            <strong>Días adicionales:</strong>
-            ${diasAdicionales}
-        </p>
+                ${formatearMoneda(
+                    Number(data.subtotal)
+                )}
+            </p>
 
-        <p>
-            <strong>Tipo de alquiler:</strong>
-            ${descripcionModalidad}
-        </p>
+            <p>
+                <strong>
+                    Ajuste por modalidad:
+                </strong>
 
-        <hr>
+                ${formatearMoneda(
+                    Number(data.valor_modalidad)
+                )}
+            </p>
 
-        <p>
-            <strong>Valor días iniciales:</strong>
-            ${formatearMoneda(valorInicial)}
-        </p>
+            <h3>
+                Total:
+                ${formatearMoneda(
+                    Number(data.total)
+                )}
+            </h3>
 
-        <p>
-            <strong>Valor días adicionales:</strong>
-            ${formatearMoneda(valorAdicional)}
-        </p>
+        `;
 
-        <p>
-            <strong>Descuento días adicionales:</strong>
-            ${formatearMoneda(descuentoAdicional)}
-        </p>
 
-        <p>
-            <strong>Ajuste por modalidad:</strong>
-            ${formatearMoneda(valorModalidad)}
-        </p>
+        document.getElementById(
+            "resultado"
+        ).style.display = "block";
 
-        <hr>
 
-        <h3>
-            TOTAL A PAGAR:
-            ${formatearMoneda(total)}
-        </h3>
+        mostrarMensaje(
+            data.mensaje,
+            "exito"
+        );
 
-    `;
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Error al registrar alquiler:",
+            error
+        );
+
+
+        mostrarMensaje(
+            "Ocurrió un error al registrar el alquiler.",
+            "error"
+        );
+
+    });
 
 });
 
@@ -252,5 +430,255 @@ function formatearMoneda(valor) {
         currency: "COP",
         maximumFractionDigits: 0
     });
+}
+
+
+function mostrarMensaje(texto, tipo) {
+
+    const mensaje = document.getElementById("mensaje");
+
+    mensaje.textContent = texto;
+
+    mensaje.className = "mensaje " + tipo;
+
+    mensaje.style.display = "block";
+}
+
+// =========================================
+// PREPARAR CORREO
+// =========================================
+
+const btnCorreo =
+    document.getElementById("btnCorreo");
+
+
+btnCorreo.addEventListener("click", function () {
+
+    if (!window.ultimaFactura) {
+
+        mostrarMensaje(
+            "Primero debe calcular una factura.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const factura = window.ultimaFactura;
+
+
+    const asunto =
+        "Factura ALQUIPC #" +
+        factura.numero_factura;
+
+
+    const cuerpo = `
+
+Hola ${factura.nombre_cliente},
+
+Gracias por utilizar los servicios de ALQUIPC.
+
+Detalles de su factura:
+
+Número de factura:
+${factura.numero_factura}
+
+ID del cliente:
+${factura.codigo_cliente}
+
+Número de equipos:
+${factura.equipos}
+
+Días iniciales:
+${factura.dias_iniciales}
+
+Días adicionales:
+${factura.dias_adicionales}
+
+Modalidad:
+${factura.modalidad}
+
+Valor días iniciales:
+${formatearMoneda(
+    Number(factura.valor_inicial)
+)}
+
+Valor días adicionales:
+${formatearMoneda(
+    Number(factura.valor_adicional)
+)}
+
+Descuento días adicionales:
+${formatearMoneda(
+    Number(factura.descuento_adicional)
+)}
+
+Subtotal:
+${formatearMoneda(
+    Number(factura.subtotal)
+)}
+
+Ajuste por modalidad:
+${formatearMoneda(
+    Number(factura.valor_modalidad)
+)}
+
+TOTAL:
+${formatearMoneda(
+    Number(factura.total)
+)}
+
+Cordialmente,
+
+ALQUIPC
+Sistema de Facturación
+    `;
+
+
+    const enlaceCorreo =
+        "mailto:" +
+        factura.correo +
+        "?subject=" +
+        encodeURIComponent(asunto) +
+        "&body=" +
+        encodeURIComponent(cuerpo);
+
+
+    window.location.href =
+        enlaceCorreo;
+
+});
+
+
+// =========================================
+// NUEVA FACTURA
+// =========================================
+
+const btnNuevaFactura =
+    document.getElementById("btnNuevaFactura");
+
+
+if (btnNuevaFactura) {
+
+    btnNuevaFactura.addEventListener(
+        "click",
+        function (event) {
+
+            // Evitar cualquier comportamiento
+            // predeterminado del botón
+            event.preventDefault();
+
+
+            // =====================================
+            // LIMPIAR DATOS DEL CLIENTE
+            // =====================================
+
+            const nombre =
+                document.getElementById("nombreCliente");
+
+            if (nombre) {
+                nombre.value = "";
+            }
+
+
+            const correo =
+                document.getElementById("correo");
+
+            if (correo) {
+                correo.value = "";
+            }
+
+
+            const idCliente =
+                document.getElementById("idCliente");
+
+            if (idCliente) {
+                idCliente.value = "";
+            }
+
+
+            // =====================================
+            // RESTABLECER DATOS DEL ALQUILER
+            // =====================================
+
+            const equipos =
+                document.getElementById("equipos");
+
+            if (equipos) {
+                equipos.value = 2;
+            }
+
+
+            const dias =
+                document.getElementById("dias");
+
+            if (dias) {
+                dias.value = 1;
+            }
+
+
+            const tipoAlquiler =
+                document.getElementById("tipoAlquiler");
+
+            if (tipoAlquiler) {
+                tipoAlquiler.value = "";
+            }
+
+
+            const diasAdicionales =
+                document.getElementById(
+                    "diasAdicionales"
+                );
+
+            if (diasAdicionales) {
+                diasAdicionales.value = 0;
+            }
+
+
+            // =====================================
+            // OCULTAR RESULTADO
+            // =====================================
+
+            const resultado =
+                document.getElementById("resultado");
+
+            if (resultado) {
+                resultado.style.display = "none";
+            }
+
+
+            // =====================================
+            // LIMPIAR MENSAJE
+            // =====================================
+
+            const mensaje =
+                document.getElementById("mensaje");
+
+            if (mensaje) {
+
+                mensaje.textContent = "";
+
+                mensaje.style.display = "none";
+            }
+
+
+            // =====================================
+            // ELIMINAR FACTURA TEMPORAL
+            // =====================================
+
+            window.ultimaFactura = null;
+
+
+            // =====================================
+            // VOLVER AL NOMBRE DEL CLIENTE
+            // =====================================
+
+            if (nombre) {
+                nombre.focus();
+            }
+
+        }
+    );
 
 }
