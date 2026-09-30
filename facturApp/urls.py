@@ -23,4 +23,10 @@ urlpatterns = [
         name="registrar_alquiler"
     ),
 
+    path(
+    "historial-facturas/",
+    views.historial_facturas,
+    name="historial_facturas"
+),
+
 ]

@@ -226,6 +226,41 @@
             <div id="detalleFactura" class="detalle-factura"></div>
 
 
+            <!-- =========================================
+     HISTORIAL DE FACTURAS
+     ========================================= -->
+
+            <section id="historial" class="resultado">
+
+                <h2>
+                    Historial de facturas
+                </h2>
+
+
+                <!-- BUSCADOR -->
+
+                <div class="campo">
+
+                    <label for="buscarFactura">
+                        Buscar factura
+                    </label>
+
+                    <input type="text" id="buscarFactura" placeholder="Número de factura, cliente o ID">
+
+                </div>
+
+
+                <div id="listaHistorial">
+
+                    <p>
+                        No se ha cargado el historial.
+                    </p>
+
+                </div>
+
+            </section>
+
+
             <!-- ACCIONES -->
 
             <div class="acciones">
@@ -236,6 +271,10 @@
 
                 <button type="button" id="btnNuevaFactura" class="btn btn-secundario">
                     Nueva factura
+                </button>
+
+                <button type="button" id="btnHistorial" class="btn btn-secundario">
+                    Ver historial
                 </button>
 
             </div>

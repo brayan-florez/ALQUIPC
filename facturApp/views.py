@@ -60,6 +60,26 @@ def registrar_cliente(request):
             )
 
 
+        cliente_existente = Cliente.objects.filter(
+            correo__iexact=correo
+        ).first()
+
+        if cliente_existente:
+
+            return JsonResponse(
+                {
+                    "exito": False,
+                    "mensaje": (
+                        "Ya existe un cliente registrado "
+                        "con este correo."
+                    ),
+                    "codigo_cliente":
+                        cliente_existente.codigo_cliente
+                },
+                status=400
+            )
+
+
         cliente = Cliente.objects.create(
             nombre=nombre,
             correo=correo
@@ -429,3 +449,44 @@ def registrar_alquiler(request):
             },
             status=400
         )
+
+    # =========================================
+# HISTORIAL DE FACTURAS
+# =========================================
+
+def historial_facturas(request):
+
+    facturas = Factura.objects.select_related(
+        "alquiler__cliente"
+    ).order_by("-id")
+
+
+    datos = []
+
+
+    for factura in facturas:
+
+        datos.append({
+
+            "numero": factura.id,
+
+            "cliente": factura.alquiler.cliente.codigo_cliente,
+
+            "nombre": factura.alquiler.cliente.nombre,
+
+            "correo": factura.alquiler.cliente.correo,
+
+            "equipos": factura.alquiler.equipos,
+
+            "dias": factura.alquiler.dias_iniciales,
+
+            "dias_adicionales": factura.alquiler.dias_adicionales,
+
+            "modalidad": factura.alquiler.modalidad,
+
+            "total": str(factura.total),
+
+        })
+
+
+    return JsonResponse(datos, safe=False)

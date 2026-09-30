@@ -457,3 +457,69 @@ main {
     }
 
 }
+
+/* =========================================
+   HISTORIAL DE FACTURAS
+   ========================================= */
+
+#historial {
+    margin-top: 30px;
+}
+
+
+.factura-historial {
+
+    background-color: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-left: 5px solid #FE6C05;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.factura-historial h3 {
+
+    margin-top: 0;
+
+    color: #03071E;
+
+}
+
+
+.factura-historial p {
+
+    margin: 8px 0;
+
+}
+
+
+.total-historial {
+
+    font-size: 20px;
+
+    color: #FE6C05;
+
+    border-top: 1px solid #dddddd;
+
+    padding-top: 12px;
+
+}
+
+/* =========================================
+   BUSCADOR DE FACTURAS
+   ========================================= */
+
+#buscarFactura {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+}

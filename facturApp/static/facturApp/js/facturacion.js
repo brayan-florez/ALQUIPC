@@ -682,3 +682,309 @@ if (btnNuevaFactura) {
     );
 
 }
+
+// =========================================
+// FACTURAS DEL HISTORIAL
+// =========================================
+
+let facturasHistorial = [];
+// =========================================
+// HISTORIAL DE FACTURAS
+// =========================================
+
+const btnHistorial =
+    document.getElementById("btnHistorial");
+
+
+if (btnHistorial) {
+
+    btnHistorial.addEventListener(
+        "click",
+        function () {
+
+            cargarHistorial();
+
+        }
+    );
+
+}
+
+
+// =========================================
+// CARGAR HISTORIAL
+// =========================================
+
+function cargarHistorial() {
+
+    fetch("/historial-facturas/")
+
+        .then(response => {
+
+            return response.json();
+
+        })
+
+        .then(facturas => {
+
+            facturasHistorial = facturas;
+
+
+            document.getElementById(
+                "historial"
+            ).style.display = "block";
+
+
+            mostrarFacturas(
+                facturasHistorial
+            );
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Error:",
+                error
+            );
+
+            mostrarMensaje(
+                "No fue posible cargar el historial.",
+                "error"
+            );
+
+        });
+
+}
+
+
+// =========================================
+// MOSTRAR FACTURAS
+// =========================================
+
+function mostrarFacturas(facturas) {
+
+    const lista =
+        document.getElementById(
+            "listaHistorial"
+        );
+
+
+    if (facturas.length === 0) {
+
+        lista.innerHTML = `
+            <p>
+                No se encontraron facturas.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    let contenido = "";
+
+
+    facturas.forEach(
+        function (factura) {
+
+            let nombreModalidad =
+                factura.modalidad;
+
+
+            if (
+                factura.modalidad ===
+                "ciudad"
+            ) {
+
+                nombreModalidad =
+                    "Dentro de la ciudad";
+
+            }
+
+
+            if (
+                factura.modalidad ===
+                "fuera"
+            ) {
+
+                nombreModalidad =
+                    "Fuera de la ciudad";
+
+            }
+
+
+            if (
+                factura.modalidad ===
+                "establecimiento"
+            ) {
+
+                nombreModalidad =
+                    "Dentro del establecimiento";
+
+            }
+
+
+            contenido += `
+
+                <div class="factura-historial">
+
+                    <h3>
+                        Factura #${factura.numero}
+                    </h3>
+
+
+                    <p>
+                        <strong>
+                            Cliente:
+                        </strong>
+
+                        ${factura.nombre}
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            ID:
+                        </strong>
+
+                        ${factura.cliente}
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Correo:
+                        </strong>
+
+                        ${factura.correo}
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Equipos:
+                        </strong>
+
+                        ${factura.equipos}
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Días iniciales:
+                        </strong>
+
+                        ${factura.dias}
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Días adicionales:
+                        </strong>
+
+                        ${factura.dias_adicionales}
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Modalidad:
+                        </strong>
+
+                        ${nombreModalidad}
+                    </p>
+
+
+                    <p class="total-historial">
+
+                        <strong>
+                            Total:
+                        </strong>
+
+                        ${formatearMoneda(
+                            Number(
+                                factura.total
+                            )
+                        )}
+
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    lista.innerHTML =
+        contenido;
+
+}
+
+
+// =========================================
+// BUSCAR FACTURAS
+// =========================================
+
+const buscarFactura =
+    document.getElementById(
+        "buscarFactura"
+    );
+
+
+if (buscarFactura) {
+
+    buscarFactura.addEventListener(
+        "input",
+        function () {
+
+            const texto =
+                buscarFactura.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const resultados =
+                facturasHistorial.filter(
+                    function (factura) {
+
+                        return (
+
+                            factura.numero
+                                .toString()
+                                .includes(texto)
+
+                            ||
+
+                            factura.nombre
+                                .toLowerCase()
+                                .includes(texto)
+
+                            ||
+
+                            factura.cliente
+                                .toLowerCase()
+                                .includes(texto)
+
+                            ||
+
+                            factura.correo
+                                .toLowerCase()
+                                .includes(texto)
+
+                        );
+
+                    }
+                );
+
+
+            mostrarFacturas(
+                resultados
+            );
+
+        }
+    );
+
+}
