@@ -16,6 +16,13 @@ btnRegistrarCliente.addEventListener("click", function () {
         ).value;
 
 
+    const patronNombre =
+        /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)+$/;
+
+    const patronCorreo =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
     if (nombre === "") {
 
         mostrarMensaje(
@@ -27,10 +34,32 @@ btnRegistrarCliente.addEventListener("click", function () {
     }
 
 
+    if (!patronNombre.test(nombre)) {
+
+        mostrarMensaje(
+            "Ingrese un nombre válido con nombre y apellido.",
+            "error"
+        );
+
+        return;
+    }
+
+
     if (correo === "") {
 
         mostrarMensaje(
             "Debe ingresar el correo del cliente.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!patronCorreo.test(correo)) {
+
+        mostrarMensaje(
+            "Ingrese un correo electrónico válido.",
             "error"
         );
 
@@ -60,43 +89,43 @@ btnRegistrarCliente.addEventListener("click", function () {
 
     })
 
-    .then(response => response.json())
+        .then(response => response.json())
 
-    .then(data => {
+        .then(data => {
 
-        if (data.exito) {
+            if (data.exito) {
 
-            document.getElementById("idCliente").value =
-                data.codigo_cliente;
+                document.getElementById("idCliente").value =
+                    data.codigo_cliente;
 
+
+                mostrarMensaje(
+                    "Cliente registrado correctamente. ID asignado: "
+                    + data.codigo_cliente,
+                    "exito"
+                );
+
+            } else {
+
+                mostrarMensaje(
+                    data.mensaje,
+                    "error"
+                );
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
 
             mostrarMensaje(
-                "Cliente registrado correctamente. ID asignado: "
-                + data.codigo_cliente,
-                "exito"
-            );
-
-        } else {
-
-            mostrarMensaje(
-                data.mensaje,
+                "Ocurrió un error al registrar el cliente.",
                 "error"
             );
 
-        }
-
-    })
-
-    .catch(error => {
-
-        console.error(error);
-
-        mostrarMensaje(
-            "Ocurrió un error al registrar el cliente.",
-            "error"
-        );
-
-    });
+        });
 
 });
 
@@ -231,75 +260,75 @@ btnCalcular.addEventListener("click", function () {
 
     })
 
-    .then(response => {
+        .then(response => {
 
-        console.log(
-            "Código de respuesta:",
-            response.status
-        );
-
-        return response.json();
-
-    })
-
-    .then(data => {
-
-        console.log(
-            "Respuesta de Django:",
-            data
-        );
-
-        window.ultimaFactura = data;
-
-
-        if (!data.exito) {
-
-            mostrarMensaje(
-                data.mensaje,
-                "error"
+            console.log(
+                "Código de respuesta:",
+                response.status
             );
 
-            return;
-        }
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            console.log(
+                "Respuesta de Django:",
+                data
+            );
+
+            window.ultimaFactura = data;
 
 
-        // =========================================
-        // NOMBRE DE LA MODALIDAD
-        // =========================================
+            if (!data.exito) {
 
-        let nombreModalidad = "";
+                mostrarMensaje(
+                    data.mensaje,
+                    "error"
+                );
 
-
-        if (data.modalidad === "ciudad") {
-
-            nombreModalidad =
-                "Dentro de la ciudad";
-        }
+                return;
+            }
 
 
-        if (data.modalidad === "fuera") {
+            // =========================================
+            // NOMBRE DE LA MODALIDAD
+            // =========================================
 
-            nombreModalidad =
-                "Fuera de la ciudad";
-        }
-
-
-        if (data.modalidad === "establecimiento") {
-
-            nombreModalidad =
-                "Dentro del establecimiento";
-        }
+            let nombreModalidad = "";
 
 
-        // =========================================
-        // MOSTRAR RESULTADO
-        // =========================================
+            if (data.modalidad === "ciudad") {
 
-        const detalleFactura =
-            document.getElementById("detalleFactura");
+                nombreModalidad =
+                    "Dentro de la ciudad";
+            }
 
 
-        detalleFactura.innerHTML = `
+            if (data.modalidad === "fuera") {
+
+                nombreModalidad =
+                    "Fuera de la ciudad";
+            }
+
+
+            if (data.modalidad === "establecimiento") {
+
+                nombreModalidad =
+                    "Dentro del establecimiento";
+            }
+
+
+            // =========================================
+            // MOSTRAR RESULTADO
+            // =========================================
+
+            const detalleFactura =
+                document.getElementById("detalleFactura");
+
+
+            detalleFactura.innerHTML = `
 
             <p>
                 <strong>Número de factura:</strong>
@@ -339,8 +368,8 @@ btnCalcular.addEventListener("click", function () {
                 </strong>
 
                 ${formatearMoneda(
-                    Number(data.valor_inicial)
-                )}
+                Number(data.valor_inicial)
+            )}
             </p>
 
             <p>
@@ -349,8 +378,8 @@ btnCalcular.addEventListener("click", function () {
                 </strong>
 
                 ${formatearMoneda(
-                    Number(data.valor_adicional)
-                )}
+                Number(data.valor_adicional)
+            )}
             </p>
 
             <p>
@@ -359,8 +388,8 @@ btnCalcular.addEventListener("click", function () {
                 </strong>
 
                 ${formatearMoneda(
-                    Number(data.descuento_adicional)
-                )}
+                Number(data.descuento_adicional)
+            )}
             </p>
 
             <p>
@@ -369,8 +398,8 @@ btnCalcular.addEventListener("click", function () {
                 </strong>
 
                 ${formatearMoneda(
-                    Number(data.subtotal)
-                )}
+                Number(data.subtotal)
+            )}
             </p>
 
             <p>
@@ -379,46 +408,46 @@ btnCalcular.addEventListener("click", function () {
                 </strong>
 
                 ${formatearMoneda(
-                    Number(data.valor_modalidad)
-                )}
+                Number(data.valor_modalidad)
+            )}
             </p>
 
             <h3>
                 Total:
                 ${formatearMoneda(
-                    Number(data.total)
-                )}
+                Number(data.total)
+            )}
             </h3>
 
         `;
 
 
-        document.getElementById(
-            "resultado"
-        ).style.display = "block";
+            document.getElementById(
+                "resultado"
+            ).style.display = "block";
 
 
-        mostrarMensaje(
-            data.mensaje,
-            "exito"
-        );
+            mostrarMensaje(
+                data.mensaje,
+                "exito"
+            );
 
-    })
+        })
 
-    .catch(error => {
+        .catch(error => {
 
-        console.error(
-            "Error al registrar alquiler:",
-            error
-        );
+            console.error(
+                "Error al registrar alquiler:",
+                error
+            );
 
 
-        mostrarMensaje(
-            "Ocurrió un error al registrar el alquiler.",
-            "error"
-        );
+            mostrarMensaje(
+                "Ocurrió un error al registrar el alquiler.",
+                "error"
+            );
 
-    });
+        });
 
 });
 
@@ -501,33 +530,33 @@ ${factura.modalidad}
 
 Valor días iniciales:
 ${formatearMoneda(
-    Number(factura.valor_inicial)
-)}
+        Number(factura.valor_inicial)
+    )}
 
 Valor días adicionales:
 ${formatearMoneda(
-    Number(factura.valor_adicional)
-)}
+        Number(factura.valor_adicional)
+    )}
 
 Descuento días adicionales:
 ${formatearMoneda(
-    Number(factura.descuento_adicional)
-)}
+        Number(factura.descuento_adicional)
+    )}
 
 Subtotal:
 ${formatearMoneda(
-    Number(factura.subtotal)
-)}
+        Number(factura.subtotal)
+    )}
 
 Ajuste por modalidad:
 ${formatearMoneda(
-    Number(factura.valor_modalidad)
-)}
+        Number(factura.valor_modalidad)
+    )}
 
 TOTAL:
 ${formatearMoneda(
-    Number(factura.total)
-)}
+        Number(factura.total)
+    )}
 
 Cordialmente,
 
@@ -903,10 +932,10 @@ function mostrarFacturas(facturas) {
                         </strong>
 
                         ${formatearMoneda(
-                            Number(
-                                factura.total
-                            )
-                        )}
+                Number(
+                    factura.total
+                )
+            )}
 
                     </p>
 

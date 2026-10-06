@@ -1,7 +1,10 @@
 import json
+import re
 
 from decimal import Decimal
 
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -39,7 +42,6 @@ def registrar_cliente(request):
 
 
         if nombre == "":
-
             return JsonResponse(
                 {
                     "exito": False,
@@ -48,13 +50,36 @@ def registrar_cliente(request):
                 status=400
             )
 
+        patron_nombre = r"^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+)+$"
+
+        if not re.fullmatch(patron_nombre, nombre):
+            return JsonResponse(
+                {
+                    "exito": False,
+                    "mensaje": (
+                        "El nombre solo puede contener letras y espacios "
+                        "y debe incluir nombre y apellido."
+                    )
+                },
+                status=400
+            )
 
         if correo == "":
-
             return JsonResponse(
                 {
                     "exito": False,
                     "mensaje": "Debe ingresar el correo del cliente."
+                },
+                status=400
+            )
+
+        try:
+            validate_email(correo)
+        except ValidationError:
+            return JsonResponse(
+                {
+                    "exito": False,
+                    "mensaje": "Debe ingresar un correo electrónico válido."
                 },
                 status=400
             )
