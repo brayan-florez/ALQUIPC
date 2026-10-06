@@ -59,7 +59,7 @@ btnRegistrarCliente.addEventListener("click", function () {
     if (!patronCorreo.test(correo)) {
 
         mostrarMensaje(
-            "Ingrese un correo electrónico válido.",
+            "Ingrese un correo electrónico válido. ej: cliente@correo.com",
             "error"
         );
 
